@@ -145,11 +145,9 @@ Potential enhancements include:
 ```bash
 Kernel → Restart & Run All
 
-
 ### 📘 View the Notebook (Best Rendering)
 
 GitHub sometimes fails to render large Altair visualizations.  
 For the most reliable viewing, please use NBViewer:
 
 ➡ **https://nbviewer.org/github/NaremanD/fundamentals-of-data-visualization/blob/main/netflix_visualization.ipynb**
-
