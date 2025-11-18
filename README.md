@@ -1,133 +1,146 @@
 ## 📺 Netflix Visualization Project
-## Final Project – Data Visualization Course
 
-🌟 Overview
-This repository contains my final visualization project analyzing patterns in Netflix’s global catalog of movies and TV shows. Using a curated subset of the popular Kaggle Netflix Movies and TV Shows dataset, this project explores:
+This project explores the Netflix Titles dataset through a series of interactive and static visualizations using Python and Altair. The goal is to understand how Netflix’s catalog has evolved, how genres and ratings are distributed, which countries contribute the most content, and how long it takes for a title to be added to Netflix after its original release.
 
--How Netflix content has evolved over time
--Which genres and ratings dominate the platform
--Which countries contribute the most titles
--Relationships between release year, content type, country, and genre
+This project was completed as part of a data visualization coursework module and follows a full pipeline—from data selection and cleaning to design, evaluation, and final analysis.
 
-The project includes data cleaning, exploratory analysis, visualization prototyping, user evaluation, and a final interactive visualization.
+---
+
 
 ## 📂 Repository Structure
-netflix-visualization-project/
+Netflix-visualization-project/
 │
 ├── data/
-│   ├── netflix_titles.csv
-│   └── netflix_titles_subset_3000.csv
+│ ├── netflix_titles.csv
+│ ├── netflix_titles_subset_3000.csv
+│ └── netflix_titles_clean.csv (optional, created during notebook run)
 │
 ├── notebooks/
-│   └── netflix_visualization.ipynb
-│
-├── src/
-│   ├── load_data.py
-│   ├── preprocessing.py
-│   └── charts.py
-│
-├── sketches/
-│   └── (low-fidelity prototypes here)
+│ └── netflix_visualization.ipynb
 │
 └── README.md
 
-## 📊 Data Description
 
-This project uses the public Netflix Movies and TV Shows dataset from Kaggle (8,807 records). Each record contains metadata describing a title available on Netflix, including:
+---
 
--type (Movie or TV Show)
--title
--director/cast
--country
--date_added
--release_year
--rating
--duration
--listed_in (genres)
--description
+## 📊 Dataset Overview
 
-# To ensure smooth performance with Altair visualizations, a 3,000-row subset of the dataset was sampled using:
-df_subset = df_full.sample(n=3000, random_state=42)
+**Source:** Kaggle — *Netflix Movies and TV Shows*  
+**Rows:** ~8,800 (subset to 3,000 for responsive visuals)  
+**Format:** CSV; tabular data  
+**Core Columns Used:**
 
-## 🧭 Part 1 – Goals, Tasks, and Initial Critique
-# 🎯 Goals
-1-Understand how Netflix content changes over time
-2-Identify dominant genres and ratings
-3-Explore geographic patterns in content production
+- `type` — Movie or TV Show  
+- `title`  
+- `director`, `cast`  
+- `country`  
+- `date_added` (cleaned → `year_added`)  
+- `release_year`  
+- `rating` (grouped into rating categories)  
+- `duration` (cleaned → `duration_int`, `duration_type`)  
+- `listed_in` (cleaned → `main_genre`)
 
-# 📝 Tasks
--Compare counts of Movies vs TV Shows over release years
--Identify top genres based on frequency
--Compare countries by number of titles produced
+---
 
-# 🔍 Critique of Existing Visualizations
+## 🧹 Data Cleaning & Feature Engineering
 
-Existing Netflix charts often suffer from:
--Overly long category lists (genres, countries)
--Random color palettes
--Lack of interactivity
--Overplotting in map visualizations
+Several transformations were applied:
 
-This project addresses these limitations through filtering, simplified groupings, consistent color design, and interactive Altair components.
+- Removed trailing whitespace from string fields  
+- Converted `date_added` → `datetime` → extracted `year_added`  
+- Split `duration` into `duration_int` and `duration_type`  
+- Extracted first country into `country_primary`  
+- Extracted first genre into `main_genre`  
+- Grouped complex ratings into:
+  - **Family/Kids**
+  - **Teen**
+  - **Mature**
 
-## Part 2 – Task Decomposition & Prototypes
+These cleaned fields support clearer, more interpretable visualizations.
 
-# Task 1 – Explore Time Trends
--Why: Understand how Netflix content grows
--How: Time-series chart
--Target Data: release_year, type
+---
 
-# Task 2 – Explore Genre Distribution
--Why: Identify dominant genres
--How: Bar chart with interactive filtering
--Target Data: listed_in (first genre)
+## 🎯 Project Goals & Tasks
 
-# Task 3 – Explore Country Contributions
--Why: Understand geographic differences
--How: Bar chart (or choropleth)
--Target Data: country
+The project focuses on three major analytical tasks:
 
-# 📸 Low-Fidelity Prototypes
-Sketches for these visualizations are included in the /sketches/ directory.
+### ✔ Task 1: Understand Netflix's growth over time  
+- Why? Explore catalog expansion  
+- Means: Line chart + interactive slider  
+- Insight: Sharp growth after 2015
 
-## 🔍 Part 3 – Evaluation Plan
+### ✔ Task 2: Analyze Netflix’s genre landscape  
+- Why? Identify dominant genres  
+- Means: Bar charts, heatmap, stacked area chart  
+- Insight: Dramas, Comedies, Documentaries dominate
 
-# ❓ Evaluation Question
-Can users accurately understand Netflix’s content trends through this visualization?
+### ✔ Task 3: Examine country-level contributions  
+- Why? Understand global distribution  
+- Means: Top-15 bar chart & interactive highlight chart  
+- Insight: US and India lead, strong diversity overall
 
-# 👥 Participants
+### ✔ Task 4: Investigate lag between release & Netflix addition  
+- Why? Understand acquisition/publishing behavior  
+- Means: Histogram  
+- Insight: Many titles added within 0–10 years
 
-Three non-expert users:
--A classmate
--A colleague
--A family member
+---
 
-# 📏 Measures
-- Accuracy (Are their answers correct?)
-- Insight depth (Can they identify meaningful trends?)
-- Efficiency (How quickly can they use filters?)
-- Usability rating (1–5 scale)
+## 📈 Visualizations Included
 
-# 🧪 Method: Think-Aloud Protocol
+### 1. **Netflix Titles Over Time (Interactive Slider)**
+Shows yearly growth of Movies vs TV Shows.
 
-Participants:
-1- View the visualization
-2-Answer a set of questions aloud
-3-Provide usability feedback afterward
+### 2. **Top 10 Genres Bar Chart**
+Simple, clear comparison of the most common genres.
 
-# ✔ Success Criteria
+### 3. **Genre × Rating Category Heatmap**
+Grouped ratings → clearer, cleaner interpretation.
 
-* ≥ 80% correct answers
-* ≥ 2 meaningful insights identified
-* Usability ≥ 4/5
+### 4. **Genre Share Over Time (Stacked Area Chart)**
+Shows how relative genre presence changes since 2004.
 
-##  📊 Final Visualization
+### 5. **Top 15 Countries Bar Chart**
+Highlights major contributors to Netflix content.
 
-* The final interactive visualization includes:
-* Time-series chart of content by release year
-* Genre distribution bar chart (Top 10 genres)
-* Country comparison chart
-* Hover tooltips and dropdown filters
-* Consistent red/blue Netflix-inspired color palette
+### 6. **Interactive Country Highlight Chart**
+Hover-based comparison.
 
+### 7. **Lag Between Release and Netflix Addition (Histogram)**
+Shows how long titles take to appear on Netflix.
 
+---
+
+## 🧪 Evaluation Summary
+
+A small think-aloud evaluation with non-expert participants was conducted to assess readability, insightfulness, and usability. Participants correctly interpreted most insights and preferred grouped-axis visuals over cluttered originals. High-level success criteria were met.
+
+---
+
+## 📝 Conclusion
+
+The analysis reveals a rapidly expanding Netflix catalog with strong representation from Drama, Comedy, and International genres. Ratings skew heavily toward Teen and Mature content for most genres. The majority of titles originate from the US and India. Lag analysis shows Netflix increasingly acquires or produces content shortly after release.
+
+---
+
+## 🚀 Future Work
+
+Potential enhancements include:
+
+- Text analysis of movie/TV descriptions  
+- Maps for country-based visualizations  
+- Director/actor networks  
+- Comparative analysis across streaming platforms  
+- Deployment as a dashboard (Streamlit or Dash)
+
+---
+
+## ▶ How to Run the Notebook
+
+1. Clone the repository  
+2. Ensure the `data/` folder contains the CSV files  
+3. Open the project root folder in VS Code or Jupyter  
+4. Run all cells from the notebook:
+
+```bash
+Kernel → Restart & Run All
